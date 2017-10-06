@@ -17,6 +17,8 @@ Gem::Specification.new do |s|
   s.requirements << 'none'
 
   s.add_dependency 'spree_core', '~> 3.3.2'
+  s.add_dependency 'haml'
+  s.add_dependency 'haml-rails'
 
   s.add_development_dependency 'capybara', '~> 2.15'
   s.add_development_dependency 'coffee-rails'
