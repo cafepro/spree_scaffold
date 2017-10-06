@@ -1,14 +1,13 @@
-class CreateSpree<%= class_name.pluralize %>Translations < ActiveRecord::Migration
-  def up
-    Spree::<%= class_name %>.create_translation_table!({
-<% attributes.each do |attribute| -%>
-<% next unless options[:i18n].include? attribute.name -%>
-      <%= attribute.name %>: :<%= attribute.type %>,
-<% end -%>
-    })
-  end
-
-  def down
-    Spree::<%= class_name %>.drop_translation_table!
+class CreateSpree<%= class_name.pluralize %> < ActiveRecord::Migration[5.1]
+  def change
+    create_table :spree_<%= table_name %> do |t|
+      <% attributes.each do |attribute| -%>
+        <% next if attribute.type == :image || attribute.type == :file -%>
+              t.<%= attribute.type %> :<%= attribute.name %>
+        <% end -%>
+        <% unless options[:skip_timestamps] -%>
+            t.timestamps
+      <% end -%>
+    end
   end
 end
