@@ -1,18 +1,13 @@
-<%% content_for :page_title do %>
-  <%%= Spree.t(:new_<%= singular_name %>) %>
-<%% end %>
+- content_for :page_title do
+  = Spree.t(:new_<%= singular_name %>)
 
-<div data-hook="admin_<%= singular_name %>_new_form_header">
-  <%%= render 'spree/shared/error_messages', target: @<%= singular_name %> %>
-</div>
+%div{'data-hook': "admin_<%= singular_name %>_new_form_header"}
+  = render 'spree/shared/error_messages', target: @<%= singular_name %>
 
-<div data-hook="admin_<%= singular_name %>_new_form">
-  <%%= form_for [:admin, @<%= singular_name %>] do |f| %>
-    <div class="row">
-      <div class="col-md-12">
-        <%%= render 'form', f: f %>
-        <%%= render 'spree/admin/shared/new_resource_links' %>
-      </div>
-    </div>
-  <%% end %>
-</div>
+
+%div{'data-hook': "admin_<%= singular_name %>_new_form"}
+  = form_for [:admin, @<%= singular_name %>] do |f|
+    %div.row
+      %div.col-md-12
+        = render 'form', f: f
+        = render 'spree/admin/shared/new_resource_links'
