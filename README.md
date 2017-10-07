@@ -26,6 +26,10 @@ Usage
 Generate a scaffold for the new `Brand` model:
 
     $ rails generate spree_scaffold:scaffold Brand name:string description:text position:integer ... [--i18n name description]
+Full example without i18n but using haml views (by default)
+    $ rails generate spree_scaffold:scaffold Brand name:string description:text position:integer
+Another example with no haml views
+    $ rails generate spree_scaffold:scaffold Brand name:string description:text position:integer --haml false
 
 And adjust the [glyphicons](http://glyphicons.com/) icon name on the `app/overrides/spree/admin/add_spree_...` file.
 
