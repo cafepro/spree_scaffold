@@ -7,7 +7,7 @@
 </div>
 
 <div data-hook="admin_<%= singular_name %>_edit_form">
-  <%%= form_with model: [:admin, @<%= singular_name %>] do |f| %>
+  <%%= form_with model: [:admin, @<%= singular_name %>], local: true do |f| %>
     <div class="row">
       <div class="col-md-12">
         <%%= render 'form', f: f %>
