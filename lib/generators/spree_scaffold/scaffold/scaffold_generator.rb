@@ -9,7 +9,7 @@ module SpreeScaffold
 
       argument :attributes, type: :array, default: [], banner: 'field:type field:type'
       class_option :i18n, type: :array, default: [], required: false, desc: 'Translated fields'
-      class_option :yaml, type: :boolean, default: :true, required: false, desc: 'Yaml views or erb if false'
+      class_option :yaml, type: :array, default: [:true], required: false, desc: 'Yaml views or erb if false'
 
       # convert views to yaml by default or keep it as erb if requested
       # after_filter :erb2yaml, only: [:create_views, :create_locale], if: -> { yaml? }
@@ -96,7 +96,7 @@ module SpreeScaffold
       end
 
       def yaml?
-        options[:yaml]
+        options[:yaml].first.to_s == 'true'
       end
 
       private
