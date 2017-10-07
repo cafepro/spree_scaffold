@@ -9,6 +9,10 @@ module SpreeScaffold
 
       argument :attributes, type: :array, default: [], banner: 'field:type field:type'
       class_option :i18n, type: :array, default: [], required: false, desc: 'Translated fields'
+      class_option :yaml, type: :boolean, default: :true, required: false, desc: 'Yaml views or erb if false'
+
+      # convert views to yaml by default or keep it as erb if requested
+      # after_filter :erb2yaml, only: [:create_views, :create_locale], if: -> { yaml? }
 
       def self.next_migration_number(path)
         if @prev_migration_nr
@@ -26,12 +30,6 @@ module SpreeScaffold
         template 'controller.rb', "app/controllers/spree/admin/#{plural_name}_controller.rb"
       end
 
-      def create_views
-        %w[index new edit _form].each do |view|
-          template "views/#{view}.html.erb", "app/views/spree/admin/#{plural_name}/#{view}.html.erb"
-        end
-      end
-
       def create_migrations
         migration_template 'migrations/model.rb', "db/migrate/create_spree_#{plural_name}.rb"
 
@@ -44,23 +42,39 @@ module SpreeScaffold
         end
       end
 
+      def create_deface_override
+        template 'overrides/add_to_admin_menu.html.erb.deface', "app/overrides/spree/layouts/admin/add_spree_#{plural_name}.html.erb.deface"
+      end
+
+      def create_routes
+        append_file 'config/routes.rb', routes_text
+      end
+
       def create_locale
         %w[en it].each do |locale|
           template "locales/#{locale}.yml", "config/locales/#{plural_name}.#{locale}.yml"
         end
       end
 
-      def create_deface_override
-        template 'overrides/add_to_admin_menu.html.erb.deface', "app/overrides/spree/layouts/admin/add_spree_#{plural_name}.html.erb.deface"
+      def create_views
+        %w[index new edit _form].each do |view|
+          if yaml? && self.behavior == :revoke
+            template "views/#{view}.html.erb", "app/views/spree/admin/#{plural_name}/#{view}.html.haml"
+          else
+            template "views/#{view}.html.erb", "app/views/spree/admin/#{plural_name}/#{view}.html.erb"
+          end
+        end
+        erb2yaml if yaml? && !i18n? && self.behavior != :revoke
       end
 
       def create_translation_template
         return unless i18n?
-        template 'views/translation_form.html.erb', "app/views/spree/admin/translations/#{singular_name}.html.erb"
-      end
-
-      def create_routes
-        append_file 'config/routes.rb', routes_text
+        if yaml? && self.behavior == :revoke
+          template 'views/translation_form.html.erb', "app/views/spree/admin/translations/#{singular_name}.html.haml"
+        else
+          template 'views/translation_form.html.erb', "app/views/spree/admin/translations/#{singular_name}.html.erb"
+          erb2yaml if yaml?
+        end
       end
 
       protected
@@ -81,7 +95,16 @@ module SpreeScaffold
         options[:i18n].any?
       end
 
+      def yaml?
+        options[:yaml]
+      end
+
       private
+
+      def erb2yaml
+        # try to convert all project erb to haml sintax
+        system('rake haml:erb2haml')
+      end
 
       def routes_text
         if sortable?

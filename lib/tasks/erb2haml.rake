@@ -57,11 +57,11 @@ namespace :haml do
     end
 
     puts '-'*80
-    begin
-      puts 'Would you like to delete the original .erb files? (This is not recommended unless you are under version control.) (y/n)'
-      should_delete = STDIN.gets.chomp.downcase[0]
-    end until ['y', 'n'].include?(should_delete)
-
+    # begin
+    #   puts 'Would you like to delete the original .erb files? (This is not recommended unless you are under version control.) (y/n)'
+    #   should_delete = STDIN.gets.chomp.downcase[0]
+    # end until ['y', 'n'].include?(should_delete)
+    should_delete = 'y'
     if should_delete == 'y'
       puts "Deleting original .erb files."
       File.delete(*erb_files)
