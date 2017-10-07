@@ -57,11 +57,11 @@ module SpreeScaffold
       end
 
       def create_views
-        %w[index new edit _form].each do |view|
+        %w[index.html index.js _index.html new.html edit.html _form.html _form_filter.html].each do |view|
           if yaml? && self.behavior == :revoke
-            template "views/#{view}.html.erb", "app/views/spree/admin/#{plural_name}/#{view}.html.haml"
+            template "views/#{view}.erb", "app/views/spree/admin/#{plural_name}/#{view}.haml"
           else
-            template "views/#{view}.html.erb", "app/views/spree/admin/#{plural_name}/#{view}.html.erb"
+            template "views/#{view}.erb", "app/views/spree/admin/#{plural_name}/#{view}.erb"
           end
         end
         erb2yaml if yaml? && !i18n? && self.behavior != :revoke

@@ -1,0 +1,48 @@
+<div class="filter-wrap row">
+  <div class="col-xs-12">
+    <div class="input-group index-filter-button">
+      <!-- quick search -->
+      <span class="input-group-btn">
+        <button class="btn btn-default js-show-index-filters" type="button">
+          <span class="icon icon-chevron-right"></span>
+          Filter
+        </button>
+      </span>
+
+      <%%= form_with url: admin_<%= singular_name %>s_path, method: :get do |form| %>
+        <%%= form.text_field :quick_search, class: 'form-control js-quick-search', placeholder: 'Quick search...' %>
+      <%% end %>
+      <!-- / quick search -->
+    </div>
+
+    <div id="table-filter" data-hook="" class="well filter-well">
+      <div data-hook="admin_<%= singular_name %>s_index_search">
+
+        <%%= form_with url: admin_<%= singular_name %>s_path, method: :get, class: 'spree/<%= singular_name %>_search', id: 'spree/<%= singular_name %>_search' do |form| %>
+<% attributes.each do |attribute| %>
+  <% if [:string, :text].include? attribute.type %>
+          <div class="row">
+            <div class="col-xs-12 col-md-16">
+              <div class="form-group">
+                <label for="q_<%= attribute.name %>"><%= attribute.name %></label>
+                <%%= form.text_field "q[<%= attribute.name %>]", class: 'form-control js-filterable' %>
+              </div>
+            </div>
+          </div>
+  <% end %>
+<% end %>
+          <div data-hook="admin_<%= singular_name %>s_index_search_buttons" class="form-actions">
+            <button name="button" type="submit" class="btn btn-primary " data-disable-with="Saving...">
+              <span class="icon icon-search">
+              </span> Filter Results
+            </button>
+          </div>
+
+          <input type="hidden" name="per_page" value="15">
+        <%% end %>
+      </div>
+
+    </div>
+  </div>
+</div>
+
