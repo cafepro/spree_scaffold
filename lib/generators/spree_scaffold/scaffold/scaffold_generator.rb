@@ -51,7 +51,7 @@ module SpreeScaffold
       end
 
       def create_locale
-        %w[en it].each do |locale|
+        %w[es].each do |locale|
           template "locales/#{locale}.yml", "config/locales/#{plural_name}.#{locale}.yml"
         end
       end

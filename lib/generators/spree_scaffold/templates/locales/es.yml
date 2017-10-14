@@ -1,0 +1,14 @@
+es:
+  spree:
+    admin:
+      tab:
+        <%= plural_name %>: "<%= class_name.pluralize %>"
+    new_<%= singular_name %>: "Nuevo <%= class_name %>"
+    listing_<%= plural_name %>: "Listando <%= class_name.pluralize %>"
+    editing_<%= singular_name %>: "Editando <%= class_name %>"
+  activerecord:
+    attributes:
+      spree/<%= singular_name %>:
+<% attributes.each do |attribute| -%>
+        <%= attribute.name %>: <%= attribute.name.titleize %>
+<% end -%>
