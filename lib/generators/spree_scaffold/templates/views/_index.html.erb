@@ -10,7 +10,7 @@
 <% end -%>
 <% attributes.each do |attribute| %>
   <% if ![:image, :file, :text].include?(attribute.type) && attribute.name != 'position' %>
-      <th><%%= t(:<%= attribute.name %>, scope: 'activerecord.attributes.spree/<%= singular_name %>') %></th>
+      <th><%%= t('activerecord.attributes.spree/<%= singular_name %>.<%= attribute.name %>') %></th>
   <% end %>
 <% end %>
       <th data-hook="admin_<%= plural_name %>_index_header_actions" class="actions"></th>
